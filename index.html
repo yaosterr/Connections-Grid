@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYT Connections Helper</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>NYT Connections Helper</h1>
+        
+        <!-- 4x4 grid for organizing words -->
+        <div class="grid-container">
+            <div class="grid-row">
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+            <div class="grid-row">
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+            <div class="grid-row">
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+            <div class="grid-row">
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="grid-cell" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+        </div>
+
+        <!-- Input area for words -->
+        <div class="input-section">
+            <button onclick="fetchTodayWords()">Get Today's Words</button>
+            <button onclick="resetGrid()">Reset Grid</button>
+        </div>
+
+        <!-- Word bank at the bottom -->
+        <div id="wordBank" class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

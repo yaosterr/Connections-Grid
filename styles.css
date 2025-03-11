@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.grid-container {
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 20px 0;
+}
+
+.grid-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.grid-cell {
+    width: 120px;
+    height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.input-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 8px;
+    min-height: 100px;
+    align-content: flex-start;
+}
+
+.word {
+    padding: 10px 15px;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: move;
+    user-select: none;
+}
+
+.word:hover {
+    background-color: #dee2e6;
+}
+
+.grid-cell.drag-over,
+.word-bank.drag-over {
+    background-color: #e9ecef;
+} 
