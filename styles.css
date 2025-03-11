@@ -6,8 +6,11 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
@@ -21,12 +24,22 @@ h1 {
     border-radius: 8px;
     padding: 10px;
     margin: 20px 0;
+    width: fit-content;
+    position: relative;
 }
 
 .grid-row {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
     margin: 5px 0;
+    position: relative;
+}
+
+.grid-cells {
+    display: flex;
+    gap: 10px;
+    width: 520px;
 }
 
 .grid-cell {
@@ -95,4 +108,70 @@ button:hover {
 .grid-cell.drag-over,
 .word-bank.drag-over {
     background-color: #e9ecef;
+}
+
+.lock-button {
+    padding: 5px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.grid-row.locked .grid-cell {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+.grid-row.locked .word {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* Updated toggle switch styles */
+.toggle-switch {
+    position: absolute;
+    right: -70px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: #2196F3;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
 } 

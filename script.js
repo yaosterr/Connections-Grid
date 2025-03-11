@@ -16,36 +16,61 @@ function drop(ev) {
     
     // Check if dropping into word bank
     if (dropTarget.id === 'wordBank' || dropTarget.closest('#wordBank')) {
+        // Check if the word is from a locked row
+        const sourceRow = draggedElement.closest('.grid-row');
+        if (sourceRow && sourceRow.classList.contains('locked')) {
+            return; // Prevent dropping locked words
+        }
         const wordBank = document.getElementById('wordBank');
         wordBank.appendChild(draggedElement);
+        
+        // Check row completion after removing word
+        if (sourceRow) {
+            checkRowCompletion(sourceRow);
+        }
         return;
     }
     
-    // For grid cells, get the actual cell (in case we dropped on a word)
+    // For grid cells, get the actual cell
     dropTarget = dropTarget.classList.contains('grid-cell') ? 
         dropTarget : 
         dropTarget.classList.contains('word') ? 
             dropTarget.parentElement : null;
     
+    // Check if target cell is in a locked row
+    const targetRow = dropTarget?.closest('.grid-row');
+    if (targetRow?.classList.contains('locked')) {
+        return; // Prevent dropping into locked rows
+    }
+    
     if (dropTarget && dropTarget.classList.contains('grid-cell')) {
-        // If dropping onto a grid cell
+        // Handle the drop as before...
         if (!dropTarget.hasChildNodes()) {
-            // Empty cell - just append
             dropTarget.appendChild(draggedElement);
         } else {
-            // Cell has a word - swap positions
             const existingWord = dropTarget.firstChild;
             const draggedParent = draggedElement.parentElement;
             
-            // If dragged from word bank, move existing word there
+            // Check if either word is in a locked row
+            const existingWordRow = existingWord.closest('.grid-row');
+            if (existingWordRow?.classList.contains('locked')) {
+                return; // Prevent swapping with locked words
+            }
+            
             if (draggedParent.id === 'wordBank') {
                 dropTarget.appendChild(draggedElement);
                 document.getElementById('wordBank').appendChild(existingWord);
             } else {
-                // Swap positions of the two words
                 draggedParent.appendChild(existingWord);
                 dropTarget.appendChild(draggedElement);
             }
+        }
+        
+        // Check row completion after drop
+        checkRowCompletion(targetRow);
+        const sourceRow = draggedElement.closest('.grid-row');
+        if (sourceRow && sourceRow !== targetRow) {
+            checkRowCompletion(sourceRow);
         }
     }
 }
@@ -54,11 +79,16 @@ function resetGrid() {
     const wordBank = document.getElementById('wordBank');
     const gridCells = document.querySelectorAll('.grid-cell');
     
-    // Move all words from grid cells back to word bank
+    // Move only unlocked words back to word bank
     gridCells.forEach(cell => {
-        if (cell.firstChild) {
+        if (cell.firstChild && !cell.closest('.grid-row').classList.contains('locked')) {
             wordBank.appendChild(cell.firstChild);
         }
+    });
+    
+    // Update lock buttons visibility
+    document.querySelectorAll('.grid-row').forEach(row => {
+        checkRowCompletion(row);
     });
 }
 
@@ -105,4 +135,25 @@ async function fetchTodayWords() {
     } catch (error) {
         console.error('Error fetching today\'s words:', error);
     }
+}
+
+function toggleLock(checkbox) {
+    const gridRow = checkbox.closest('.grid-row');
+    const isLocked = checkbox.checked;
+    gridRow.classList.toggle('locked', isLocked);
+    
+    // Update draggable property for words in this row
+    const words = gridRow.querySelectorAll('.word');
+    words.forEach(word => {
+        word.draggable = !isLocked;
+    });
+}
+
+function checkRowCompletion(row) {
+    const cells = row.querySelectorAll('.grid-cell');
+    const toggleSwitch = row.querySelector('.toggle-switch');
+    const isFull = Array.from(cells).every(cell => cell.children.length > 0);
+    
+    // Show/hide toggle switch based on row completion
+    toggleSwitch.style.display = isFull ? 'inline-block' : 'none';
 } 
