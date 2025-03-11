@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function() {
+    fetchTodayWords();
+});
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
