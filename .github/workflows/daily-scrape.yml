@@ -2,7 +2,7 @@ name: Daily Scraper
 
 on:
   schedule:
-    - cron: '20 7 * * *'  # Runs at 07:20 UTC (3:20 PM China time)
+    - cron: '30 4 * * *'  # Runs at 04:30 UTC (12:30 PM China time)
   workflow_dispatch:      # Allows manual trigger
 
 jobs:
@@ -15,6 +15,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+          
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install ./google-chrome-stable_current_amd64.deb
           
       - name: Install system dependencies
         run: |

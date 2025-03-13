@@ -10,6 +10,17 @@ import pytesseract
 import time
 import json
 import os
+import undetected_chromedriver as uc
+
+def setup_driver():
+    chrome_options = uc.ChromeOptions()
+    chrome_options.add_argument('--headless')  # Run in headless mode
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    
+    # Initialize the driver with these options
+    driver = uc.Chrome(options=chrome_options)
+    return driver
 
 def get_connections_words():
     chrome_options = Options()
