@@ -2,7 +2,7 @@ name: Daily Scraper
 
 on:
   schedule:
-    - cron: '58 6 * * *'  # Runs at 06:58 UTC (2:58 PM China time)
+    - cron: '07 7 * * *'  # Runs at 06:58 UTC (2:58 PM China time)
   workflow_dispatch:      # Allows manual trigger
 
 jobs:
