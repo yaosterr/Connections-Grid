@@ -17,20 +17,33 @@ def setup_driver():
     chrome_options.add_argument('--headless')  # Run in headless mode
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--disable-extensions')
+    chrome_options.add_argument('--disable-infobars')
+    chrome_options.add_argument('--remote-debugging-port=9222')
+    chrome_options.add_argument('--window-size=1920,1080')
     
     # Use user data directory from environment if set
     if 'CHROME_USER_DATA_DIR' in os.environ:
         chrome_options.add_argument(f'--user-data-dir={os.environ["CHROME_USER_DATA_DIR"]}')
     
     # Initialize the driver with these options
-    driver = uc.Chrome(options=chrome_options)
-    return driver
+    try:
+        driver = uc.Chrome(options=chrome_options)
+        return driver
+    except Exception as e:
+        print(f"Error setting up Chrome driver: {str(e)}")
+        raise
 
 def get_connections_words():
     chrome_options = Options()
     chrome_options.add_argument('--headless=new')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--disable-extensions')
+    chrome_options.add_argument('--disable-infobars')
+    chrome_options.add_argument('--remote-debugging-port=9222')
     chrome_options.add_argument('--window-size=1920,1080')
     
     # Use user data directory from environment if set
@@ -46,13 +59,23 @@ def get_connections_words():
         
         # Navigate to connectionsplus.io
         print("Navigating to connectionsplus.io...")
-        driver.get('https://connectionsplus.io/nyt-archive?sortBy=newest&page=1')
+        try:
+            driver.get('https://connectionsplus.io/nyt-archive?sortBy=newest&page=1')
+            print("Successfully loaded the page")
+        except Exception as e:
+            print(f"Error loading page: {str(e)}")
+            raise
         
         # Wait for the table to load and find the first puzzle link
         print("Looking for latest puzzle...")
-        latest_puzzle = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//tr[1]//a[contains(text(), 'Connections #')]"))
-        )
+        try:
+            latest_puzzle = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, "//tr[1]//a[contains(text(), 'Connections #')]"))
+            )
+            print("Found latest puzzle link")
+        except Exception as e:
+            print(f"Error finding puzzle link: {str(e)}")
+            raise
         
         # Get puzzle number for verification
         puzzle_text = latest_puzzle.text
