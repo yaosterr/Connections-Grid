@@ -66,13 +66,19 @@ jobs:
         
       - name: Commit and push if changed
         run: |
+          # Clean up temporary files
+          rm -f error_page.html error_state.png google-chrome-stable_current_amd64.deb scraper_output.log
+          
+          # Configure git
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'actions@github.com'
-          git add today_words.json
-          if git diff --quiet && git diff --staged --quiet; then
-            echo "No changes to commit"
+          
+          # Check if today_words.json has changed
+          if git diff --quiet today_words.json; then
+            echo "No changes to today_words.json"
           else
-            echo "Changes detected, committing and pushing..."
+            echo "Changes detected in today_words.json, committing and pushing..."
+            git add today_words.json
             git commit -m "Update words for $(date +'%Y-%m-%d')"
             git push
           fi
