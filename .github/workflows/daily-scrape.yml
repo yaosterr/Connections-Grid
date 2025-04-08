@@ -5,16 +5,21 @@ on:
     - cron: '30 4 * * *'  # Runs at 04:30 UTC (12:30 PM China time)
   workflow_dispatch:      # Allows manual trigger
 
+permissions:
+  contents: write  # Required for pushing changes
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for git operations
       
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'  # Specify an older Python version
+          python-version: '3.10'
           
       - name: Install Chrome
         run: |
@@ -31,7 +36,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools  # Add setuptools installation
+          pip install setuptools
           pip install selenium webdriver_manager pillow
           pip install undetected-chromedriver
           pip install pytesseract
@@ -44,5 +49,4 @@ jobs:
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'actions@github.com'
           git add today_words.json
-          git commit -m "Update words for $(date +'%Y-%m-%d')" || exit 0
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update words for $(date +'%Y-%m-%d')" && git push)
