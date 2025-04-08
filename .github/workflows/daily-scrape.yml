@@ -21,12 +21,23 @@ jobs:
         with:
           python-version: '3.10'
           
-      - name: Install Chrome
+      - name: Install Chrome and ChromeDriver
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
+          # Remove existing Chrome and ChromeDriver
+          sudo apt-get remove -y google-chrome-stable
+          sudo rm -f /usr/bin/chromedriver
+          
+          # Install Chrome
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install ./google-chrome-stable_current_amd64.deb
+          
+          # Install ChromeDriver matching Chrome version
+          CHROME_VERSION=$(google-chrome --version | cut -d ' ' -f 3)
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION%.*}")
+          wget "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/bin/
+          sudo chmod +x /usr/bin/chromedriver
           
       - name: Install system dependencies
         run: |
@@ -44,6 +55,9 @@ jobs:
       - name: Run scraper with logging
         run: |
           echo "Starting scraper..."
+          # Create a unique user data directory
+          mkdir -p /tmp/chrome-user-data
+          export CHROME_USER_DATA_DIR="/tmp/chrome-user-data"
           python scraper.py > scraper_output.log 2>&1
           echo "Scraper completed. Output:"
           cat scraper_output.log
