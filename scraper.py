@@ -36,7 +36,7 @@ def setup_driver():
         raise
 
 def get_connections_words():
-    chrome_options = Options()
+    chrome_options = uc.ChromeOptions()
     chrome_options.add_argument('--headless=new')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
@@ -53,8 +53,7 @@ def get_connections_words():
     print("Starting with Chrome options configured...")
     
     try:
-        service = Service()
-        driver = webdriver.Chrome(service=service, options=chrome_options)
+        driver = uc.Chrome(options=chrome_options)
         driver.set_page_load_timeout(30)
         
         # Navigate to connectionsplus.io
