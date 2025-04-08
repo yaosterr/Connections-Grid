@@ -55,11 +55,12 @@ jobs:
           mkdir -p /tmp/chrome-user-data
           export CHROME_USER_DATA_DIR="/tmp/chrome-user-data"
           
-          # Run scraper with additional error handling
-          python -c 'import sys; import traceback; try: from scraper import get_connections_words; words = get_connections_words(); print("Successfully scraped words:", words); except Exception as e: print("Error:", str(e)); print("Traceback:"); traceback.print_exc(); sys.exit(1)' > scraper_output.log 2>&1
-          
-          echo "Scraper completed. Output:"
-          cat scraper_output.log
+          # Run scraper directly to see output
+          python scraper.py || {
+            echo "Scraper failed. Full error output:"
+            cat scraper_output.log
+            exit 1
+          }
           
       - name: Check if new words were scraped
         run: |
